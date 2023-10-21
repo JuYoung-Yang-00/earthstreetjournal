@@ -1,4 +1,4 @@
-# __init__.py
+# app/__init__.py
 from flask import Flask
 from flask_pymongo import PyMongo
 from flask_cors import CORS
@@ -16,7 +16,7 @@ def create_app():
     mongo.init_app(app)
 
 
-    from app.views.home import home_bp
-    app.register_blueprint(home_bp)  # register the blueprint with the Flask app
+    from app.views.routes import route_bp
+    app.register_blueprint(route_bp)
 
     return app
