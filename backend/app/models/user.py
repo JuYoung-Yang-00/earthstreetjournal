@@ -1,5 +1,7 @@
-class User:
-    def __init__(self, username, email):
-        self.username = username
-        self.email = email
-    # Other operations related to user can be added here
+from flask_login import UserMixin
+
+class User(UserMixin):
+    def __init__(self, data):
+        self.id = data['_id']
+        self.email = data['email']
+        self.username = data['username']

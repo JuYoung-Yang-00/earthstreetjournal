@@ -1,25 +1,34 @@
-/backend
-    /app
-        __init__.py
-        /views
-            routes.py
-            /user_routes
-                __init__.py
-                logic.py
-            /article_routes
-                __init__.py
-                politics.py
-                tech.py
-                nature.py
-            /auth_routes
-                __init__.py
-                oauth.py
-        /models
-            __init__.py
-            user.py
-            article.py
-config.py
-requirements.txt
-run.py
-/venv
-.env
+backend/
+│
+├── app/
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── user.py
+│   │
+│   ├── views/
+│   │   ├── article_scrape/
+│   │   │   ├── __init__.py
+│   │   │   ├── nature/
+│   │   │   ├── politics/
+│   │   │   │   ├── climatenews.py
+│   │   │   │   ├── eenews.py
+│   │   │   ├── science/
+│   │   │   ├── technology/
+│   │   │   ├── scrape_routes.py    
+│   │   ├── auth_routes/
+│   │   │   ├── __init__.py
+│   │   │   ├── oauth.py
+│   │   │
+│   │   ├── __init__.py
+│   │
+│   ├── __init__.py
+│
+├── .env
+├── config.py
+├── requirements.txt
+├── run.py
+├── venv/ 
+
+frontend/
+.gitignore
+README.md
