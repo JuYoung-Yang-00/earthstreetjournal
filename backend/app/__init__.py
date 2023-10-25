@@ -24,7 +24,7 @@ def create_app():
         
     jwt.init_app(app)
 
-    from backend.app.views.article_scrape.scrape_routes import scrape_bp
+    from app.views.article_scrape.scrape_routes import scrape_bp
     from app.views.auth_routes.oauth import oauth_bp
     
     app.register_blueprint(oauth_bp, url_prefix='/oauth')

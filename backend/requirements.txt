@@ -2,7 +2,6 @@ Flask
 Flask-PyMongo
 python-dotenv
 flask-cors
-authlib
 dnspython
 bs4
 beautifulsoup4
