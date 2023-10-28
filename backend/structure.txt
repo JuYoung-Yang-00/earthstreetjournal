@@ -5,19 +5,30 @@ backend/
 │   │   ├── __init__.py
 │   │   ├── user.py
 │   │
-│   ├── views/
+│   ├── components/
 │   │   ├── article_scrape/
 │   │   │   ├── __init__.py
 │   │   │   ├── nature/
+│   │   │   │   ├── natureconservancy.py
+│   │   │   │   ├── smithsonianmag.py
 │   │   │   ├── politics/
 │   │   │   │   ├── climatenews.py
 │   │   │   │   ├── eenews.py
+│   │   │   │   ├── politico.py
 │   │   │   ├── science/
+│   │   │   │   ├── sciencenews.py
+│   │   │   │   ├── scientificamerican.py
 │   │   │   ├── technology/
+│   │   │   │   ├── techcrunch.py
+│   │   │   │   ├── theverge.py
 │   │   │   ├── scrape_routes.py    
 │   │   ├── auth_routes/
 │   │   │   ├── __init__.py
 │   │   │   ├── oauth.py
+│   │   ├── summaries/
+│   │   │   ├── __init__.py
+│   │   │   ├── summarize.py  
+│   │   │   ├── routes.py  
 │   │   │
 │   │   ├── __init__.py
 │   │

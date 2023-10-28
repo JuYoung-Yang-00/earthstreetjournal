@@ -9,3 +9,4 @@ selenium
 webdriver-manager
 flask-login
 Flask-JWT-Extended
+openai

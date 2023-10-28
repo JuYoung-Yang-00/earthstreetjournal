@@ -1,18 +1,28 @@
-# app/__init__.py
 from flask import Flask
 from flask_pymongo import PyMongo
 from flask_cors import CORS
 from config import Config
 from flask_jwt_extended import JWTManager
+from bson import ObjectId
+import json  # Use Python's built-in json module
 
 mongo = PyMongo()
 jwt = JWTManager()
 
+class CustomJSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, ObjectId):
+            return str(o)
+        return super().default(o)
+
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
-    CORS(app)
     
+    # Use the custom JSONEncoder
+    app.json_encoder = CustomJSONEncoder
+    
+    CORS(app)
     mongo.init_app(app)
 
     try:
@@ -21,13 +31,14 @@ def create_app():
     except Exception as e:
         print("Could not connect to MongoDB:", e)
         
-        
     jwt.init_app(app)
 
-    from app.views.article_scrape.scrape_routes import scrape_bp
-    from app.views.auth_routes.oauth import oauth_bp
+    from app.components.article_scrape.scrape_routes import scrape_bp
+    from app.components.auth_routes.oauth import oauth_bp
+    from app.components.summarize.routes import summary_bp
     
     app.register_blueprint(oauth_bp, url_prefix='/oauth')
     app.register_blueprint(scrape_bp, url_prefix='/scrape')
+    app.register_blueprint(summary_bp, url_prefix='/summarize')
 
     return app
