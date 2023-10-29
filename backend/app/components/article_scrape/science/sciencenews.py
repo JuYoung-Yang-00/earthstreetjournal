@@ -54,7 +54,7 @@ def scrape_sciencenews():
             with open("errors.log", "a") as log_file:
                 log_file.write(f"Error processing article {idx + 1}. Reason: {str(e)}\n")
     
-    # store_in_mongodb(articles)
+    store_in_mongodb(articles)
     print(f"Finished processing {len(articles)} articles.")
     return articles
 

@@ -27,6 +27,8 @@ session.headers.update(HEADERS)
 
 def scrape_politico():
     base_url = "https://www.politico.com"
+
+    
     category_url = f"{base_url}/news/climate-change"
     response = session.get(category_url)
 
@@ -59,7 +61,7 @@ def scrape_politico():
                 log_file.write(f"Error processing article {idx + 1}. Reason: {str(e)}\n")
                 
                 
-    # store_in_mongodb(articles)
+    store_in_mongodb(articles)
     print(f"Finished processing {len(articles)} articles.")
     return articles
 
@@ -85,7 +87,7 @@ def process_politico_article(container, base_url):
         
         # Find the 'p' tag with the class 'story-meta__authors'
         author_element = article_soup.find('p', class_='story-meta__authors')
-
+        
         # Check if the element was found and extract authors
         if author_element:
             # Extracting all 'a' tags which contain the author names

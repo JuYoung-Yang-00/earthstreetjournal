@@ -10,6 +10,8 @@ import requests
 from bs4 import BeautifulSoup
 from app import mongo
 
+import re
+
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
 HEADERS = {"User-Agent": USER_AGENT}
 MAX_ARTICLES = 50
@@ -59,13 +61,68 @@ def process_article(article_link):
         article_soup = BeautifulSoup(article_response.content, 'html.parser')
         
         title = article_soup.select_one("h1.headline").text.strip()
-        author = article_soup.select_one("div.author-text p.author a").text.strip()
-        date_string = article_soup.select_one("time.pub-date").text.strip()
-        date_object = datetime.strptime(date_string, '%B %d, %Y')
+
+        #author = article_soup.select_one("div.author-text p.author a").text.strip()
+
+        author_element = article_soup.find('p', class_='author')
+
+        # Check if the element was found and extract authors
+        if author_element:
+            # Extracting all 'a' tags which contain the author names
+            author_tags = author_element.find_all('a')
+    
+            # Extracting the text from these 'a' tags (the author names) and joining them
+            author = ' and '.join(author.text.strip() for author in author_tags)
+        else:
+            author = "nope"
+
+
+        #date_string = article_soup.select_one("time.pub-date").text.strip()
+        #date_object = datetime.strptime(date_string, '%B %d, %Y')
+
+        date_element = article_soup.find('time', class_='pub-date')
+        date_str = None
+        date_object = None
+
+        if date_element:
+            date_str = date_element.get_text(strip=True)
+            if date_str:
+                try: 
+                    date_pattern = r"([A-Za-z]+ \d{1,2}, \d{4})"
+                    date_matches = re.findall(date_pattern, date_str)
+
+                    if date_matches:
+                        updated_date_str = date_matches[0]
+                        date_format = "%B %d, %Y"
+                        date_object = datetime.strptime(updated_date_str, date_format)
+                    else:
+                        print("No valid date found in the string.")
+
+
+                    
+                    #date_format = "%B %d, %Y"
+                    #date_object = datetime.strptime(date_str, date_format)
+                except ValueError as e:
+                    print(f"Error parsing date string {date_str}: {e}")
+        
+        print(date_object)
         
         # Correct the selector to target the p tags inside the div with data-article-body attribute
         content_divs = article_soup.select("div.articleLeft[data-article-body] p")
         content = ' '.join([p.text for p in content_divs])
+
+        if date_object is None:
+            return None
+        else:
+            return {
+                'category': 'nature',
+                'title': title,
+                'author': author,
+                'source' : 'smithsonianmag',
+                'content': content,
+                'date': date_object,
+                'link': article_link,
+            }   
 
         return {
             'category': 'nature',

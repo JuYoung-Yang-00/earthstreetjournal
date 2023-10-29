@@ -46,7 +46,7 @@ def scrape_theverge():
             print(f"Processed article {idx + 1} successfully.")
             time.sleep(random.uniform(2, 5))
             
-    # store_in_mongodb(articles)
+    store_in_mongodb(articles)
     print(f"Finished processing {len(articles)} articles.")
     return articles
 

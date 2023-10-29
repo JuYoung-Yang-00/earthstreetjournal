@@ -51,7 +51,22 @@ def process_article(article_link):
     # print(article_soup.prettify())
 
     title = article_soup.select_one("div.article__title-wrapper h1.article__title").text.strip()
-    author = article_soup.select_one("div.article__byline a").text.strip()
+    
+    author_element = article_soup.find('div', class_='article__byline')
+
+        # Check if the element was found and extract authors
+    if author_element:
+        # Extracting all 'a' tags which contain the author names
+        author_tags = author_element.find_all('a')
+
+        # Extracting the text from these 'a' tags (the author names) and joining them
+        authors = ' and '.join(author.text.strip() for author in author_tags)
+    else:
+        authors = "nope"
+    print(authors)
+    
+
+    #author = article_soup.select_one("div.article__byline a").text.strip()
 
     date_string_content = None
 
@@ -86,7 +101,7 @@ def process_article(article_link):
     return {
         'category': 'technology',
         'title': title,
-        'author': author,
+        'author': authors,
         'source': 'techcrunch',
         'content': content,
         'date': date_object,

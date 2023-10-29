@@ -7,7 +7,7 @@ COPIED FROM theverge.py -- only change name of function
 
 
 
-
+'''
 import sys
 import os
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..'))
@@ -118,3 +118,4 @@ def store_in_mongodb(data):
 
     print(f"Successfully stored {len(inserted_ids)} articles in MongoDB.")
 
+'''
