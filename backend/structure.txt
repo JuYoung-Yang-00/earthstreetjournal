@@ -29,6 +29,8 @@ backend/
 │   │   │   ├── __init__.py
 │   │   │   ├── summarize.py  
 │   │   │   ├── routes.py  
+│   │   ├── summarized/
+│   │   │   ├── routes.py  
 │   │   │
 │   │   ├── __init__.py
 │   │
