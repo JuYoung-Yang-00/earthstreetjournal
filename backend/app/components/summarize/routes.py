@@ -47,13 +47,9 @@ def summarize_article():
     try:
         summarizer = OpenAISummarizer(Config.OPENAI_API_KEY)
 
-        # Get all the summarized article_ids from summaries collection
+        # Check if summary already exists for the article
         summarized_article_ids = [summary['_id'] for summary in mongo.db.summaries.find({}, {"_id": 1})]
-
-        # Set a flag for finding an article to summarize
         article_to_summarize = None
-
-        # Setup query depending on whether there are already summarized articles
         query = {'_id': {'$nin': summarized_article_ids}} if summarized_article_ids else {}
 
         # Iterate over articles until we find one with content less than or equal to 1800 words
@@ -62,10 +58,9 @@ def summarize_article():
             if word_count <= 1800:
                 article_to_summarize = article
                 break
-
-        # If there's no new article to summarize, return a message indicating so
         if not article_to_summarize:
             return jsonify({"success": False, "message": "No new articles to summarize or all remaining articles are too long"}), 404
+
 
         # Serialize the whole article document into a JSON string using the custom encoder
         article_json_string = json.dumps(article_to_summarize, cls=JSONEncoder)
@@ -105,3 +100,24 @@ def summarize_article():
 
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
+
+
+
+@summary_bp.route('/<category>', methods=['GET'])
+def articles_by_category(category):
+    try:
+        valid_categories = ["politics", "nature", "technology", "science"]
+        if category not in valid_categories:
+            return jsonify({'error': 'Invalid category specified'}), 400
+
+        articles = mongo.db.articles.find({'category': category})
+
+        summarized_articles = list(articles)
+        for article in summarized_articles:
+            article['_id'] = str(article['_id'])
+
+        return jsonify(summarized_articles), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    

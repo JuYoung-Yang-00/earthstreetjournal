@@ -30,6 +30,7 @@ backend/
 │   │   │   ├── summarize.py  
 │   │   │   ├── routes.py  
 │   │   ├── summarized/
+│   │   │   ├── __init__.py
 │   │   │   ├── routes.py  
 │   │   │
 │   │   ├── __init__.py
