@@ -57,8 +57,16 @@ class _CategoryHeaderState extends State<CategoryHeader> {
         },
         child: InkWell(
           onTap: () async {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => widget.goesTo));
+            // i might have to do await 200 milliseconds
+            Navigator.of(context).push(PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  widget.goesTo,
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                // This is just a fade transition, but you can customize as needed.
+                return FadeTransition(opacity: animation, child: child);
+              },
+            ));
           },
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,

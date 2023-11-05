@@ -1,29 +1,30 @@
 import 'package:flutter/material.dart';
-import 'components/footer.dart';
+import '../components/footer.dart';
 
 import 'package:flutter_animate/flutter_animate.dart';
 
 import 'dart:math' as math;
 
-import 'components/categoryHeader.dart';
+import '../components/categoryHeader.dart';
 
-import 'components/colors.dart';
+import '../components/colors.dart';
 
-import 'subPages/naturePage.dart';
-import 'subPages/politicsPage.dart';
-import 'subPages/sciencePage.dart';
-import 'subPages/techPage.dart';
+import '../landingpage.dart';
 
-class LandingPage extends StatefulWidget {
-  const LandingPage({super.key, required this.title});
+import 'sciencePage.dart';
+import 'politicsPage.dart';
+import 'techPage.dart';
+
+class NaturePage extends StatefulWidget {
+  const NaturePage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<LandingPage> createState() => _LandingPageState();
+  State<NaturePage> createState() => _NaturePageState();
 }
 
-class _LandingPageState extends State<LandingPage> {
+class _NaturePageState extends State<NaturePage> {
   List<String> WSJHeadlines = [];
   List<String> WSJSubHeadlines = [];
   List<String> WSJImageLinks = [];
@@ -176,7 +177,7 @@ class _LandingPageState extends State<LandingPage> {
                   SizedBox(width: 11.0),
                   CategoryHeader(
                       title: 'Nature',
-                      selected: false,
+                      selected: true,
                       goesTo: NaturePage(title: 'nature')),
                   SizedBox(width: 11.0),
                   /*
@@ -188,7 +189,7 @@ class _LandingPageState extends State<LandingPage> {
                   //SizedBox(width: 11.0),
                   CategoryHeader(
                       title: 'Home',
-                      selected: true,
+                      selected: false,
                       goesTo: LandingPage(title: 'home')),
                   SizedBox(width: 11.0),
                   CategoryHeader(
