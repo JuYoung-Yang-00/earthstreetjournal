@@ -100,7 +100,6 @@ def store_in_mongodb(data):
                 print("Article doesn't have a title. Skipping...")
                 continue
 
-            # Check if the article with the given title already exists
             existing_article = mongo.db.articles.find_one({"title": title})
             if existing_article:
                 print(f"Article with title '{title}' already exists. Skipping...")
@@ -111,7 +110,6 @@ def store_in_mongodb(data):
                 result = mongo.db.articles.insert_one(article)
                 inserted_ids.append(result.inserted_id)
             except Exception as indv_exc:
-                # This exception will also catch attempts to insert a duplicate title due to the unique index
                 print(f"Error inserting article titled '{title}'. Reason: {indv_exc}")
 
         print(f"Inserted IDs: {inserted_ids}")

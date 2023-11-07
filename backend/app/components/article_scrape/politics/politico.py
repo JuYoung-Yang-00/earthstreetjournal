@@ -78,22 +78,16 @@ def process_politico_article(container, base_url):
         article_response = session.get(article_link)
         article_soup = BeautifulSoup(article_response.content, 'html.parser')
 
-        # Find the 'h2' tag with the class 'headline' and extract the text from it
         title_element = article_soup.find('h2', class_='headline')
         title = title_element.text.strip() if title_element else None
 
         #subtitle = article_soup.find('h2').text.strip() if article_soup.find('h2') else None
         #author = article_soup.find('h3', class_='post-author').text.strip().replace("By ", "") if article_soup.find('h3', class_='post-author') else None
         
-        # Find the 'p' tag with the class 'story-meta__authors'
         author_element = article_soup.find('p', class_='story-meta__authors')
         
-        # Check if the element was found and extract authors
         if author_element:
-            # Extracting all 'a' tags which contain the author names
             author_tags = author_element.find_all('a')
-    
-            # Extracting the text from these 'a' tags (the author names) and joining them
             authors = ' and '.join(author.text.strip() for author in author_tags)
         else:
             authors = "nope"
@@ -105,19 +99,14 @@ def process_politico_article(container, base_url):
                 authors = ' and '.join(author.get_text() for author in authors_tags)
         '''
         sections = article_soup.find_all('section', class_='page-content__row page-content__row--story main-section')
-        # We'll store all the paragraph texts in this list.
         all_paragraphs = []
 
-        # Iterate through each found section and extract the text from the paragraphs.
         for section in sections:
-            # Find all paragraphs in this section with the class "story-text__paragraph"
             paragraphs = section.find_all('p', class_='story-text__paragraph')
             
-            # Extract the text from these paragraphs and add it to our list.
             for paragraph in paragraphs:
                 all_paragraphs.append(paragraph.text.strip())
 
-        # Join all the paragraph texts together into one string.
         content = ' '.join(all_paragraphs)
 
 
@@ -157,7 +146,6 @@ def store_in_mongodb(data):
                 print("Article doesn't have a title. Skipping...")
                 continue
 
-            # Check if the article with the given title already exists
             existing_article = mongo.db.articles.find_one({"title": title})
             if existing_article:
                 print(f"Article with title '{title}' already exists. Skipping...")
@@ -168,7 +156,6 @@ def store_in_mongodb(data):
                 result = mongo.db.articles.insert_one(article)
                 inserted_ids.append(result.inserted_id)
             except Exception as indv_exc:
-                # This exception will also catch attempts to insert a duplicate title due to the unique index
                 print(f"Error inserting article titled '{title}'. Reason: {indv_exc}")
 
         print(f"Inserted IDs: {inserted_ids}")
